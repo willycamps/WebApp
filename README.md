@@ -8,7 +8,7 @@ This project can be used to run a basic [flask app with MySQL as DB]- BACKEND an
 
 **Step 2:** Clone the project into your local machine using below command.
 
-```git clone https://github.com/KartikShrikantHegde/Docker-Flask-MySQL.git```
+```git clone https://github.com/willycamps/Vue-Flask-Webapp.git```
 
 ### Prerequisites
 
@@ -23,7 +23,7 @@ Make sure you have Docker installed. Please follow the below link for official d
 **Step 1:** Change to the directory where the project was cloned in previous step.
 
 ```
-cd Docker-Flask-MySQL
+cd flask-vue-mysql-docker
 ```
 
 **Step 2:** Make sure Docker is up and running. You can start the docker engine from command line.
