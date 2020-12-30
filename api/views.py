@@ -12,7 +12,7 @@ class Club(Resource):
 
     def get(self):
         """ Returns a list of clubs """
-        query = "SELECT * FROM club ORDER BY club_points DESC"
+        query = "SELECT club.id, club.club, club.club_country, SUM(club_match.points) as club_points FROM club INNER JOIN club_match ON club.id = club_match.idclub GROUP BY club.id, club.club, club.club_country ORDER BY SUM(club_match.points) DESC "
         res = self.db.connection.execute(query)
         rows = res.fetchall()
         keys = res.keys()
