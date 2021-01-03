@@ -10,9 +10,12 @@ class Db():
 
         engine = create_engine(db_url)
         self.connection = engine.connect()
+        self._connection = engine.raw_connection()
+
 
     def __del__(self):
         self.connection.close()
+        self._connection.close()
 
     def clean_select_row(self, row, keys):
         try:

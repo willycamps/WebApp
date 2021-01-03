@@ -20,24 +20,32 @@ class Club(Resource):
 
         return {
          'clubs': clubs
-            
         }
 
-    def put(self):
+    def post(self):
         """
-        Update the points of Clubs to the db 
+        Add the matches to the db 
         Expect a JSON payload with the following format
-        clubs:[ {
-                    'id': 1,
-                    'points': "1"
-                }
-                ]
+        {
+            "id1":1,
+            "point1":0,
+            "id2":2,
+            "point2":3
+        }
         """
+        
         data = request.get_json()
-        query ="UPDATE club SET club_points = :points WHERE id = :id;"
+        cursor = self.db._connection.cursor()
+        args = [data["id1"],data["point1"],data["id2"],data["point2"]]
         
         try:
-            self.db.connection.execute(sql_text(query), data)
-            return True
-        except:
-            return False
+            result_args = cursor.callproc('matchClubs', args)
+            results = list(cursor.fetchall())
+            cursor.close()
+            self.db._connection.commit()
+            return {'Result': str(results)}
+        except Exception as e:
+            return {'error': str(e)}
+        finally:
+            cursor.close()
+

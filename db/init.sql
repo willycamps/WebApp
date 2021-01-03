@@ -34,12 +34,11 @@ CREATE TABLE `club_match` (
     FOREIGN KEY (idclub) REFERENCES `club`(id),
     FOREIGN KEY (idmatch) REFERENCES `match`(id));
 
--- Transaction of the matches
-BEGIN;
-	INSERT INTO `match` (`comment`) VALUES('');
-	SET @last_id = LAST_INSERT_ID();
-	INSERT INTO `club_match` (`idmatch`,`idclub`, `points`) VALUES(@last_id, 1, 3);
-	INSERT INTO `club_match` (`idmatch`,`idclub`, `points`) VALUES(@last_id, 2, 0);
-COMMIT;
+-- CREATE PROCEDURE
+DELIMITER //
+CREATE PROCEDURE `matchClubs`(IN `id1` INT(11), IN `point1` INT(11), IN `id2` INT(11), IN `point2` INT) NOT DETERMINISTIC CONTAINS SQL SQL SECURITY DEFINER BEGIN INSERT INTO `match` (`comment`) VALUES(''); SET @last_id = LAST_INSERT_ID(); INSERT INTO `club_match` (`idmatch`,`idclub`, `points`) VALUES(@last_id, id1, point1); INSERT INTO `club_match` (`idmatch`,`idclub`, `points`) VALUES(@last_id, id2, point2); END //
+
+-- CALL STORE PROCEDURE
+CALL matchClubs(1,3,2,0);
 
 
