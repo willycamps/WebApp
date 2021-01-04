@@ -8,12 +8,12 @@
             <th>Club</th>
             <th>Country</th>
             <th>Points</th>
-            <th style="width: 50px; text-align: center;">Select</th>
           </tr>
         </thead>
 
         <tbody>
           <FootballItem v-for="club in club" :key="club.id" :club="club" />
+          
         </tbody>
 
       </table>
@@ -33,23 +33,7 @@ export default {
   components: {
       FootballItem
   },
-  props:["club"],
-  data() {   
-    return {
-      Itemchecked:[]
-    }
-  }, 
-methods: {
-   check: function() {
-
-      if(this.Itemchecked != "")
-        alert("Checked")
-      else
-        alert("Unchecked")
-
-    }
-
-    }
+  props:["club"]
 
 };
 </script>

@@ -3,7 +3,7 @@
       <div class="customer-list">
         <FootballList v-for="club in clubs" :key="club.id" :club="club" />
       </div>
-      <button class="add"> Add </button>
+      
     </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
 
   },
   created(){
-    axios.get('http://localhost:8000/')
+    axios.get('http://localhost:8000/clubs')
     .then(res => this.clubs = res.data)
     .catch(err => console.log(err));
   } 

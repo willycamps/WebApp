@@ -3,7 +3,7 @@
     <h1>Vue JS with Flask API</h1>
     <div id="nav">
       <router-link to="/">Admin</router-link> |
-      <router-link to="/about">Table</router-link>
+      <router-link to="/table">Table</router-link>
     </div>
   </header>
 </template>
