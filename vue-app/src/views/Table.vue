@@ -2,21 +2,32 @@
   <div class="ui main container">
 
     <modal v-if="showModal"> 
-      <h3 slot="header" class="modal-title">
+      <h3 slot="header" class="modal-title" style="text-align: center;">
         Mark the winner
       </h3>
       
       <div slot="body">
-      
-       <ul class="list-group">
-          <li class="list-group-item" v-for="(item,index) in selected" :key="`item-${index}`">
-             {{ item}}
-             <label>
-              <input type="checkbox" v-model="winner" :value="item" :disabled="winner.length > 0 && winner.indexOf(index) === -1" 
-                number> Item {{ index }} -- {{ winner.indexOf(index) }} 
-              </label>
-          </li>
-        </ul>
+        <table class="ui celled table">
+        <thead>
+          <tr>
+            <th style="text-align: center;">Club</th>
+            <th>Winner</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr v-for="(item,index) in winner" :key="`item-${index}`"> 
+            <td style="text-align: center;">{{ item.club}}</td>  
+            <td>
+                <label>
+                  <input type="checkbox" v-model="winner" :disabled="winner.length > 1 && winner.indexOf(item) === -1" 
+                  number> <!-- Item {{ index }} -- {{ winner.indexOf(item) }} --> 
+                </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    
       </div>
 
       <div slot="footer">
@@ -29,16 +40,26 @@
 
 
       <div class="customer-list">
-        
-        <ul class="list-group" >
-          <li class="list-group-item" v-for="(item,index) in clubs.clubs" :key="`item-${index}`">
-             {{ item}}
-             <label>
+      <table class="ui celled table">
+        <thead>
+          <tr>
+            <th style="width: 50px; text-align: center;">#</th>
+            <th style="text-align: center;">Name of the Club</th>
+            <th>Choose</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr v-for="(item,index) in clubs.clubs" :key="`item-${index}`">
+            <th scope="row"> {{ item.id}}</th>  
+            <td style="text-align: center;">{{ item.club}}</td>  
+            <td><label>
                 <input type="checkbox" v-model="selected" :value="item" @change="check()"> 
-            </label>
-          </li>
-          
-        </ul>
+            </label></td>
+          </tr>
+        </tbody>
+      </table>
       </div>
       
     </div>
@@ -64,7 +85,9 @@ export default {
     }
   },
   
-  
+  computed :{     
+       
+  },
   methods: {
     
     check: function() {
@@ -72,9 +95,23 @@ export default {
       //only when the second item is checked
       if(this.selected.length == 2)
       {
-          this.openModal();
-         
+        this.addNew(this.selected);
+        this.openModal();  
       }
+    },
+    addNew: function (item) {
+
+      let result=[];
+      item.forEach(function (arrayItem) {
+                     const item={   
+                        id: arrayItem.id,
+                        club: arrayItem.club,
+                        point:1}
+                     result.push(item);
+          });
+          //
+          this.winner.push(result[0]);
+          this.winner.push(result[1]);
     },
     openModal() { 
         this.showModal = true; 
@@ -84,23 +121,44 @@ export default {
         this.winner=[];
       },
     submitAndClose() {
-      console.log(this.winner);
+      var obj= { }
+      this.winner.forEach(function (array,i){
+        i=i+1;
+        obj["id"+i]=array.id;
+        obj["point"+i]=array.point;
+      });
+
+      this.addClubsPoints(obj);
+    },
+    getClubs(){
+      axios.get('http://localhost:8000/clubs')
+    .then(res => this.clubs = res.data)
+    .catch(err => console.log(err));
+    },
+    addClubsPoints(obj){
+       axios.post('http://localhost:8000/clubs',obj)
+      .then(() => {
+          //Message of Sucessfull
+          //this.showModal = false;
+          //this.getClubs();
+          //console.log("Sucessful");
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error);
+          //this.getBooks();
+        });
     },
 
   },
   created(){
-    axios.get('http://localhost:8000/clubs')
-    .then(res => this.clubs = res.data)
-    .catch(err => console.log(err));
+    this.getClubs();
   } 
 
 }
 </script>
 <style>
-#image {
-  line-height: 1.5em;
-  list-style-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/4621/treehouse-marker.png);
-}
+
 .vue-color {
   background: #41b883 !important;
 }

@@ -43,7 +43,7 @@ class Club(Resource):
             results = list(cursor.fetchall())
             cursor.close()
             self.db._connection.commit()
-            return {'Result': str(results)}
+            return True
         except Exception as e:
             return {'error': str(e)}
         finally:
