@@ -40,5 +40,6 @@ CREATE PROCEDURE `matchClubs`(IN `id1` INT(11), IN `point1` INT(11), IN `id2` IN
 
 -- CALL STORE PROCEDURE
 CALL matchClubs(1,3,2,0);
+CALL matchClubs(3,1,4,1); 
 
 
