@@ -42,7 +42,12 @@ Build and run in the background and view logs for all the instances :
 ```
 docker-compose up --build -d && docker-compose logs --tail=all -f
 ```
-**Step 4:** Open up the browser 
+**Step 4:** Open up the browser
+ 
+In the "Table" view I see a table with football clubs, sorted by points.
+
+In the "Admin" view I have the possibility to enter a result:
+Two clubs can be selected and one can be marked as winner. Each victory is worth three points. If no winner is marked, the match is considered a draw and both teams get one point. Goals are not counted.
 
 * [The Front-End with Vue.js] (http://localhost:8001/) - Vue.js 
 ```
