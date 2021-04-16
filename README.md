@@ -88,4 +88,7 @@ http://localhost:8000/
 * Willy E. Campos
 ## License
 
-## Acknowledgments
+## Change Log
+* v0.2 - Integrate Authentication.
+* v0.1 - Initial release.
+
