@@ -86,8 +86,9 @@ http://localhost:8000/
 * GIT
 ## Authors
 * Willy E. Campos
-## License
-
+## TODO
+* Unit Test
+* CI/CD
 ## Change Log
 * v0.2 - Integrate Authentication.
 * v0.1 - Initial release.
