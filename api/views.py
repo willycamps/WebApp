@@ -39,6 +39,7 @@ class Club(Resource):
         args = [data["id1"],data["point1"],data["id2"],data["point2"]]
         
         try:
+            #matchClubs StoreProcedure
             result_args = cursor.callproc('matchClubs', args)
             results = list(cursor.fetchall())
             cursor.close()
