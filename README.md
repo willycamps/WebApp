@@ -80,8 +80,6 @@ http://localhost:8000/
 * [MySQL](https://www.mysql.com/) - Database
 * [PhpMyAdmin](https://www.phpmyadmin.net/) - MySql Client
 
-## Contributing
-
 ## Versioning
 * GIT
 ## Authors
