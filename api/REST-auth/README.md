@@ -130,6 +130,6 @@ An interesting side effect of this implementation is that it is possible to use 
 
 Change Log
 ----------
-
+**v0.2** - Migrate Endpoints from views.py .
 **v0.1** - Initial release.
 
