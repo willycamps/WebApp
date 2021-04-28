@@ -87,6 +87,7 @@ http://localhost:8000/
 ## TODO
 * Unit Test
 * CI/CD
+* Boostrap CSS
 ## Change Log
 * v0.2 - Integrate Authentication.
 * v0.1 - Initial release.
