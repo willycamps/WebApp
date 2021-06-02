@@ -89,6 +89,7 @@ http://localhost:8000/
 * Unit Test
 * CI/CD
 * Boostrap CSS
+* AWS / Google-Cloud
 ## Change Log
 * v0.2 - Integrate Authentication.
 * v0.1 - Initial release.
