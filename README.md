@@ -85,7 +85,7 @@ http://localhost:8000/
 ## Authors
 * Willy E. Campos
 ## TODO
-* Add Authentication 
+* Add README together 
 * Unit Test
 * CI/CD
 * Boostrap CSS
