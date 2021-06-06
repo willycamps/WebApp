@@ -1,6 +1,11 @@
-# Vue/Flask Webapp
+# Web Application 
 
 This project can be used to run a basic [flask app with MySQL as DB]- BACKEND and VUE.js - [FRONTEND]  using docker-compose.
+
+# Description
+The "Table" view I see a table with football clubs, sorted by points.
+In the "Admin" view I have the possibility to enter a result:
+Two clubs can be selected and one can be marked as winner. Each victory is worth three points. If no winner is marked, the match is considered a draw and both teams get one point. Goals are not counted.
 
 ## Getting Started
 
@@ -43,11 +48,6 @@ Build and run in the background and view logs for all the instances :
 docker-compose up --build -d && docker-compose logs --tail=all -f
 ```
 **Step 4:** Open up the browser
- 
-In the "Table" view I see a table with football clubs, sorted by points.
-
-In the "Admin" view I have the possibility to enter a result:
-Two clubs can be selected and one can be marked as winner. Each victory is worth three points. If no winner is marked, the match is considered a draw and both teams get one point. Goals are not counted.
 
 * [The Front-End with Vue.js] (http://localhost:8001/) - Vue.js 
 ```
@@ -80,12 +80,17 @@ http://localhost:8000/
 * [MySQL](https://www.mysql.com/) - Database
 * [PhpMyAdmin](https://www.phpmyadmin.net/) - MySql Client
 
-## Contributing
-
 ## Versioning
 * GIT
 ## Authors
 * Willy E. Campos
-## License
+## TODO
+* Add README together 
+* Unit Test
+* CI/CD
+* Boostrap CSS
+* AWS / Google-Cloud
+## Change Log
+* v0.2 - Integrate Authentication.
+* v0.1 - Initial release.
 
-## Acknowledgments

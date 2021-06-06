@@ -2,6 +2,8 @@
 **/node_modules/*
 db/data
 api/__pycache__
+/api/REST-auth/flaskapi
+/api/REST-auth/db.sqlite
 vue-app/~
 api/__pycache__/views.cpython-37.pyc
 api/__pycache__/db.cpython-37.pyc
