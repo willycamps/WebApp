@@ -85,7 +85,7 @@ http://localhost:8000/
 ## Authors
 * Willy E. Campos
 ## TODO
-* Add README together 
+* Create the missing Endpoints and make the documentation in READ.me
 * Unit Test
 * CI/CD
 * Boostrap CSS
