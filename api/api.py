@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, make_response   
+from flask import Flask, abort, request, jsonify, make_response   
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import uuid 
@@ -47,7 +47,7 @@ def token_required(f):
     return decorator 
         
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/api/register', methods=['GET', 'POST'])
 def signup_user():  
  data = request.get_json()  
 
@@ -60,7 +60,7 @@ def signup_user():
  return jsonify({'message': 'registered successfully'})   
 
 
-@app.route('/login', methods=['GET', 'POST'])  
+@app.route('/api/login', methods=['GET', 'POST'])  
 def login_user(): 
  
   auth = request.authorization   
@@ -77,7 +77,7 @@ def login_user():
   return make_response('could not verify',  401, {'WWW.Authentication': 'Basic realm: "login required"'})
 
 
-@app.route('/user', methods=['GET'])
+@app.route('/api/users', methods=['GET'])
 def get_all_users():  
    
    users = Users.query.all() 
@@ -95,6 +95,12 @@ def get_all_users():
 
    return jsonify({'users': result})  
        
+@app.route('/api/users/<int:id>')
+def get_user(id):
+    user = Users.query.get(id)
+    if not user:
+        abort(400)
+    return jsonify({'username': user.name})
 
 
 if  __name__ == '__main__':  
