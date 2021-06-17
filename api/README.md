@@ -5,7 +5,7 @@ REST-API Documentation
 Installation
 ------------
 
-create a virtual environment and install the requirements
+After cloning, create a virtual environment and install the requirements
 
     $ virtualenv flaskapi
     $ source flaskapi/bin/activate
