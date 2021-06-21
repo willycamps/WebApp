@@ -1,4 +1,4 @@
-from flask import Flask, abort, request, jsonify, make_response   
+from flask import Flask, abort, request, jsonify, g, make_response   
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import uuid 
@@ -21,6 +21,20 @@ class Users(db.Model):
   password = db.Column(db.String(150))
   admin = db.Column(db.Boolean)
 
+  def verify_password(self, password):
+        return check_password_hash(self.password, password)
+
+#@auth.verify_password
+def verify_password(username_or_token, password):
+    # first try to authenticate by token
+    user = Users.verify_auth_token(username_or_token)
+    if not user:
+        # try to authenticate with username/password
+        user = Users.query.filter_by(username=username_or_token).first()
+        if not user or not user.verify_password(password):
+            return False
+    g.user = user
+    return True
 
 def token_required(f):  
     @wraps(f)  
@@ -46,7 +60,6 @@ def token_required(f):
           return f(current_user, *args,  **kwargs)  
     return decorator 
         
-
 @app.route('/api/register', methods=['GET', 'POST'])
 def signup_user():  
  data = request.get_json()  
@@ -58,7 +71,6 @@ def signup_user():
  db.session.commit()    
 
  return jsonify({'message': 'registered successfully'})   
-
 
 @app.route('/api/login', methods=['GET', 'POST'])  
 def login_user(): 
@@ -75,7 +87,6 @@ def login_user():
      return jsonify({'token' : token.decode('UTF-8')}) 
 
   return make_response('could not verify',  401, {'WWW.Authentication': 'Basic realm: "login required"'})
-
 
 @app.route('/api/users', methods=['GET'])
 def get_all_users():  
@@ -101,6 +112,17 @@ def get_user(id):
     if not user:
         abort(400)
     return jsonify({'username': user.name})
+
+@app.route('/api/token')
+##@auth.login_required
+def get_auth_token():
+    token = g.user.generate_auth_token(600)
+    return jsonify({'token': token.decode('ascii'), 'duration': 600})
+
+@app.route('/api/resource')
+##@auth.login_required
+def get_resource():
+    return jsonify({'data': 'Hello, %s!' % g.user.name})
 
 
 if  __name__ == '__main__':  
