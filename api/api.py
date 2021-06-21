@@ -1,3 +1,4 @@
+
 from flask import Flask, abort, request, jsonify, g, make_response   
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -21,8 +22,7 @@ class Users(db.Model):
   password = db.Column(db.String(150))
   admin = db.Column(db.Boolean)
 
-  def verify_password(self, password):
-        return check_password_hash(self.password, password)
+
 
 #@auth.verify_password
 def verify_password(username_or_token, password):
@@ -35,6 +35,7 @@ def verify_password(username_or_token, password):
             return False
     g.user = user
     return True
+
 
 def token_required(f):  
     @wraps(f)  
@@ -72,6 +73,7 @@ def signup_user():
 
  return jsonify({'message': 'registered successfully'})   
 
+
 @app.route('/api/login', methods=['GET', 'POST'])  
 def login_user(): 
  
@@ -87,6 +89,7 @@ def login_user():
      return jsonify({'token' : token.decode('UTF-8')}) 
 
   return make_response('could not verify',  401, {'WWW.Authentication': 'Basic realm: "login required"'})
+
 
 @app.route('/api/users', methods=['GET'])
 def get_all_users():  
