@@ -55,6 +55,20 @@ API Documentation
     On success a JSON object with data for the authenticated user is returned.
     On failure status code 401 (unauthorized) is returned.
 
+- GET **/api/token**
+
+    Return an authentication token.<br>
+    This request must be authenticated using a HTTP Basic Authentication header.<br>
+    On success a JSON object is returned with a field `token` set to the authentication token for the user and a field `duration` set to the (approximate) number of seconds the token is valid.<br>
+    On failure status code 401 (unauthorized) is returned.
+
+- GET **/api/resource**
+
+    Return a protected resource.<br>
+    This request must be authenticated using a HTTP Basic Authentication header. Instead of username and password, the client can provide a valid authentication token in the username field. If using an authentication token the password field is not used and can be set to any value.<br>
+    On success a JSON object with data for the authenticated user is returned.<br>
+    On failure status code 401 (unauthorized) is returned.
+
 Example
 -------
 
@@ -119,6 +133,62 @@ The following `curl` command registers a new user with username `willy` and pass
         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0Yzk5MTE1Yi00M2FiLTRkZmEtODljMi1kMjAyZDczNjAwNTQiLCJleHAiOjE2MjMwMjI2Nzh9.iM5gRhU2q05rk3KYOgXjEz1r7KsyjeulT_Wo_aktVjk"
     }
 
+
+    These credentials can now be used to access protected resources:
+
+    $ curl -u willy:python -i -X GET http://127.0.0.1:5000/api/resource
+    HTTP/1.0 200 OK
+    Content-Type: application/json
+    Content-Length: 30
+    Server: Werkzeug/0.9.4 Python/2.7.3
+    Date: Thu, 28 Nov 2013 20:02:25 GMT
+    
+    {
+      "data": "Hello, Willy!"
+    }
+
+Using the wrong credentials the request is refused:
+
+    $ curl -u Willy:Ruby -i -X GET http://127.0.0.1:5000/api/resource
+    HTTP/1.0 401 UNAUTHORIZED
+    Content-Type: text/html; charset=utf-8
+    Content-Length: 19
+    WWW-Authenticate: Basic realm="Authentication Required"
+    Server: Werkzeug/0.9.4 Python/2.7.3
+    Date: Thu, 28 Nov 2013 20:03:18 GMT
+    
+    Unauthorized Access
+
+
+$ curl -u willy:python -i -X GET http://127.0.0.1:5000/api/token
+    HTTP/1.0 200 OK
+    Content-Type: application/json
+    Content-Length: 139
+    Server: Werkzeug/0.9.4 Python/2.7.3
+    Date: Thu, 28 Nov 2013 20:04:15 GMT
+    
+    {
+      "duration": 600,
+      "token": "eyJhbGciOiJIUzI1NiIsImV4cCI6MTM4NTY2OTY1NSwiaWF0IjoxMzg1NjY5MDU1fQ.eyJpZCI6MX0.XbOEFJkhjHJ5uRINh2JA1BPzXjSohKYDRT472wGOvjc"
+    }
+
+And now during the token validity period there is no need to send username and password to authenticate anymore:
+
+    $ curl -u eyJhbGciOiJIUzI1NiIsImV4cCI6MTM4NTY2OTY1NSwiaWF0IjoxMzg1NjY5MDU1fQ.eyJpZCI6MX0.XbOEFJkhjHJ5uRINh2JA1BPzXjSohKYDRT472wGOvjc:x -i -X GET http://127.0.0.1:5000/api/resource
+    HTTP/1.0 200 OK
+    Content-Type: application/json
+    Content-Length: 30
+    Server: Werkzeug/0.9.4 Python/2.7.3
+    Date: Thu, 28 Nov 2013 20:05:08 GMT
+    
+    {
+      "data": "Hello, Willy!"
+    }
+
+Once the token expires it cannot be used anymore and the client needs to request a new one. Note that in this last example the password is arbitrarily set to `x`, since the password isn't used for token authentication.
+
+An interesting side effect of this implementation is that it is possible to use an unexpired token as authentication to request a new token that extends the expiration time. 
+This effectively allows the client to change from one token to the next and never need to send username and password after the initial token was obtaine
 
 Change Log
 ----------
