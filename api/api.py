@@ -1,5 +1,7 @@
+import time
 from flask import Flask, abort, request, jsonify, g, make_response   
 from flask_sqlalchemy import SQLAlchemy
+from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 import uuid 
 import jwt
@@ -9,28 +11,47 @@ from functools import wraps
 app = Flask(__name__) 
 
 app.config['SECRET_KEY']='Th1s1ss3cr3t'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://dbuser:dbpassword@172.23.0.2:3306/clubs_db' 
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://dbuser:dbpassword@172.23.0.3:3306/clubs_db' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True 
 
 db = SQLAlchemy(app)   
+auth = HTTPBasicAuth()
 
-class Users(db.Model):  
-  id = db.Column(db.Integer, primary_key=True)
-  public_id = db.Column(db.String(50))  
-  name = db.Column(db.String(50))
-  password = db.Column(db.String(150))
-  admin = db.Column(db.Boolean)
+class Users(db.Model):
+    
+    id = db.Column(db.Integer, primary_key=True)
+    public_id = db.Column(db.String(50))  
+    name = db.Column(db.String(50))
+    password = db.Column(db.String(150))
+    admin = db.Column(db.Boolean)
 
-  def verify_password(self, password):
+    def hash_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
         return check_password_hash(self.password, password)
 
-#@auth.verify_password
+    def generate_auth_token(self, expires_in=600):
+      return jwt.encode(
+            {'id': self.id, 'exp': time.time() + expires_in},
+            app.config['SECRET_KEY'], algorithm='HS256')
+
+    @staticmethod
+    def verify_auth_token(token):
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'],algorithms=['HS256'])
+        except:
+            return
+        return Users.query.get(data['id'])
+
+
+@auth.verify_password
 def verify_password(username_or_token, password):
     # first try to authenticate by token
     user = Users.verify_auth_token(username_or_token)
     if not user:
         # try to authenticate with username/password
-        user = Users.query.filter_by(username=username_or_token).first()
+        user = Users.query.filter_by(name=username_or_token).first()
         if not user or not user.verify_password(password):
             return False
     g.user = user
@@ -120,7 +141,7 @@ def get_auth_token():
     return jsonify({'token': token.decode('ascii'), 'duration': 600})
 
 @app.route('/api/resource')
-##@auth.login_required
+@auth.login_required
 def get_resource():
     return jsonify({'data': 'Hello, %s!' % g.user.name})
 
