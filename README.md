@@ -85,6 +85,7 @@ http://localhost:8000/
 ## Authors
 * Willy E. Campos
 ## TODO
+* ORM with SQLAlchemy
 * Create the missing Endpoints and make the documentation in READ.me
 * Unit Test
 * CI/CD
