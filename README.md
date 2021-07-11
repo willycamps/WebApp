@@ -85,12 +85,11 @@ http://localhost:8000/
 ## Authors
 * Willy E. Campos
 ## TODO
-* ORM with SQLAlchemy
-* Create the missing Endpoints and make the documentation in READ.me
+* ORM with SQLAlchemy, create the missing Endpoints and make the documentation in READ.me
 * Unit Test
 * CI/CD
 * Boostrap CSS
-* AWS / Google-Cloud
+* AWS / Google-Cloud to Deploy 
 ## Change Log
 * v0.2 - Integrate Authentication.
 * v0.1 - Initial release.
