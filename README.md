@@ -2,6 +2,7 @@
 
 This project can be used to run a basic [flask app with MySQL as DB]- BACKEND and VUE.js - [FRONTEND]  using docker-compose.
 
+
 # Description
 The "Table" view I see a table with football clubs, sorted by points.
 In the "Admin" view I have the possibility to enter a result:
