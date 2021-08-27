@@ -89,6 +89,7 @@ http://localhost:8000/
 * ORM with SQLAlchemy, create the missing Endpoints and make the documentation in READ.me
 * Unit Test
 * CI/CD
+* Grafana Monitoring ?
 * Boostrap CSS
 * AWS / Google-Cloud / Azure for Docker ? 
 ## Change Log
