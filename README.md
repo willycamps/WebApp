@@ -2,6 +2,7 @@
 
 This project can be used to run a basic [flask app with MySQL as DB]- BACKEND and VUE.js - [FRONTEND]  using docker-compose.
 
+
 # Description
 The "Table" view I see a table with football clubs, sorted by points.
 In the "Admin" view I have the possibility to enter a result:
@@ -85,11 +86,12 @@ http://localhost:8000/
 ## Authors
 * Willy E. Campos
 ## TODO
-* Create the missing Endpoints and make the documentation in READ.me
+* ORM with SQLAlchemy, create the missing Endpoints and make the documentation in READ.me
 * Unit Test
 * CI/CD
+* Grafana Monitoring ?
 * Boostrap CSS
-* AWS / Google-Cloud
+* AWS / Google-Cloud / Azure for Docker ? 
 ## Change Log
 * v0.2 - Integrate Authentication.
 * v0.1 - Initial release.
