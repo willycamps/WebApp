@@ -2,7 +2,7 @@
 from flask import Flask, abort, request, jsonify, g, make_response   
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPBasicAuth
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from models import Users, app, db
 
