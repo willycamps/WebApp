@@ -88,6 +88,7 @@ http://localhost:8000/
 ## TODO
 * ORM with SQLAlchemy, create the missing Endpoints and make the documentation in READ.me
 * Unit Test
+* Codigo QR
 * CI/CD
 * Grafana Monitoring
 * Boostrap CSS
