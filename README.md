@@ -87,11 +87,13 @@ http://localhost:8000/
 * Willy E. Campos
 ## TODO
 * ORM with SQLAlchemy, create the missing Endpoints and make the documentation in READ.me
+* Version 1
 * Unit Test
-* Codigo QR
-* CI/CD
+* CI/CD - Workflow
+* Version 1.2
 * Grafana Monitoring
 * Boostrap CSS
+* Version 1.3
 * AWS / Google-Cloud / Azure for Docker ? 
 ## Change Log
 * v0.2 - Integrate Authentication.
