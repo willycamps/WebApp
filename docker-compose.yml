@@ -23,7 +23,7 @@ services:
       - PMA_HOST=db
       - MYSQL_ROOT_PASSWORD=root
     ports:
-      - 8080:80
+      - 8090:80
 
   api:
     build: ./api
@@ -44,5 +44,5 @@ services:
     container_name: nginx
     restart: always
     ports:
-      - "8000:8000"
+      - "8003:8000"
       - "8001:80"
