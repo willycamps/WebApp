@@ -1,26 +1,32 @@
-from flask import Flask, abort, request, jsonify, make_response   
+
+from flask import Flask, abort, request, jsonify, g, make_response   
 from flask_sqlalchemy import SQLAlchemy
+from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from models import Users, app, db
+
+
 import uuid 
 import jwt
 import datetime
 from functools import wraps
 
-app = Flask(__name__) 
 
-app.config['SECRET_KEY']='Th1s1ss3cr3t'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://dbuser:dbpassword@172.23.0.2:3306/clubs_db' 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True 
+auth = HTTPBasicAuth()
 
-db = SQLAlchemy(app)   
 
-class Users(db.Model):  
-  id = db.Column(db.Integer, primary_key=True)
-  public_id = db.Column(db.String(50))  
-  name = db.Column(db.String(50))
-  password = db.Column(db.String(150))
-  admin = db.Column(db.Boolean)
-
+@auth.verify_password
+def verify_password(username_or_token, password):
+    # first try to authenticate by token
+    user = Users.verify_auth_token(username_or_token)
+    if not user:
+        # try to authenticate with username/password
+        user = Users.query.filter_by(name=username_or_token).first()
+        if not user or not user.verify_password(password):
+            return False
+    g.user = user
+    return True
 
 def token_required(f):  
     @wraps(f)  
@@ -46,7 +52,6 @@ def token_required(f):
           return f(current_user, *args,  **kwargs)  
     return decorator 
         
-
 @app.route('/api/register', methods=['GET', 'POST'])
 def signup_user():  
  data = request.get_json()  
@@ -58,7 +63,6 @@ def signup_user():
  db.session.commit()    
 
  return jsonify({'message': 'registered successfully'})   
-
 
 @app.route('/api/login', methods=['GET', 'POST'])  
 def login_user(): 
@@ -75,7 +79,6 @@ def login_user():
      return jsonify({'token' : token.decode('UTF-8')}) 
 
   return make_response('could not verify',  401, {'WWW.Authentication': 'Basic realm: "login required"'})
-
 
 @app.route('/api/users', methods=['GET'])
 def get_all_users():  
@@ -102,6 +105,21 @@ def get_user(id):
         abort(400)
     return jsonify({'username': user.name})
 
+@app.route('/api/token')
+@auth.login_required
+def get_auth_token():
+    token = g.user.generate_auth_token(600)
+    return jsonify({'token': token.decode('ascii'), 'duration': 600})
+
+@app.route('/api/resource')
+@auth.login_required
+def get_resource():
+    return jsonify({'data': 'Hello, %s!' % g.user.name})
+
+#@app.route('/api/clubs', methods=['POST', 'GET'])
+#def get_clubs:
+
+#api.add_resource(Club, '/clubs',methods=['POST', 'GET'])
 
 if  __name__ == '__main__':  
      db.create_all()

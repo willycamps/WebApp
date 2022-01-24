@@ -1,6 +1,7 @@
-# Web Application 
+# Full Stack Web-Application 
 
 This project can be used to run a basic [flask app with MySQL as DB]- BACKEND and VUE.js - [FRONTEND]  using docker-compose.
+
 
 # Description
 The "Table" view I see a table with football clubs, sorted by points.
@@ -85,11 +86,15 @@ http://localhost:8000/
 ## Authors
 * Willy E. Campos
 ## TODO
-* Create the missing Endpoints and make the documentation in READ.me
+* ORM with SQLAlchemy, create the missing Endpoints and make the documentation in READ.me
+* Version 1
 * Unit Test
-* CI/CD
+* CI/CD - Workflow
+* Version 1.2
+* Grafana Monitoring
 * Boostrap CSS
-* AWS / Google-Cloud
+* Version 1.3
+* AWS / Google-Cloud / Azure for Docker ? 
 ## Change Log
 * v0.2 - Integrate Authentication.
 * v0.1 - Initial release.
